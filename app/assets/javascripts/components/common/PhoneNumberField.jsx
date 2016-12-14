@@ -31,4 +31,3 @@ const PhoneNumberField = ({Number, Type, onChange}) => (
   </div>
 )
 export default PhoneNumberField
-
