@@ -58,6 +58,24 @@ export default class Autocompleter extends React.Component {
     return `${suggestion.first_name} ${suggestion.last_name}`
   }
 
+  renderAge(date_of_birth) {
+    let ageInfo
+    const dob = moment(date_of_birth, 'YYYY-MM-DD')
+    if (dob.isValid()) {
+      const ageInYears = moment().diff(dob, 'years')
+      ageInfo = `${ageInYears} yrs old (${dob.format('M/D/YYYY')})`
+    }
+    return (
+      ageInfo ? <div>{ageInfo}</div> : null
+    )
+  }
+
+  renderGender(gender) {
+    return (
+      Gender[gender] ? <div>{Gender[gender]}</div> : null
+    )
+  }
+
   renderSSN(ssn) {
     return (
       ssn ? <div><strong className='c-gray half-pad-right'>SSN</strong><span>{ssn}</span></div> : null
@@ -81,12 +99,6 @@ export default class Autocompleter extends React.Component {
 
   renderSuggestion(suggestion) {
     const {first_name, last_name, date_of_birth, gender, ssn, address} = suggestion
-    let ageInfo
-    const dob = moment(date_of_birth, 'YYYY-MM-DD')
-    if (dob.isValid()) {
-      const ageInYears = moment().diff(dob, 'years')
-      ageInfo = `${ageInYears} yrs old (${dob.format('M/D/YYYY')})`
-    }
     return (
       <div className='row'>
         <div className='col-md-2'>
@@ -94,8 +106,8 @@ export default class Autocompleter extends React.Component {
         </div>
         <div className='col-md-4'>
           <strong>{[first_name, last_name].filter(Boolean).join(' ')}</strong>
-          <div>{Gender[gender]}</div>
-          <div>{ageInfo}</div>
+          {this.renderGender(gender)}
+          {this.renderAge(date_of_birth)}
           {this.renderSSN(ssn)}
         </div>
         <div className='col-md-6'>
